@@ -48,8 +48,7 @@ public class Guest extends Human
     {
         return last_name;
     }
-    public void addReservation(String hotel_id, String resource_id, LocalDate start, LocalDate end,
-                               LocalDate sign_date, LocalTime sign_time)
+    public void addReservation(String hotel_id,String resource_id,LocalDate start,LocalDate end,LocalDate sign_date,LocalTime sign_time)
     {
         int count = 0;
         for(Reservation reservation: HotelSystem.getReservations())
@@ -86,7 +85,11 @@ public class Guest extends Human
             System.out.println("not-allowed");
             return;
         }
-
+        else if(resource.isBusy(start, end))
+        {
+            System.out.println("not-allowed");
+            return;
+        }
         HotelSystem.getReservations().add(new Reservation(this.getUsername(), hotel_id,  resource_id,
                 start, end, sign_date, sign_time));
         System.out.println("success "+ HotelSystem.getReservationsCount());

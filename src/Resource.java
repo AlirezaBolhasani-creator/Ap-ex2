@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.util.List;
+
 public abstract class Resource
 {
     private final String resource_id;
@@ -46,4 +49,25 @@ public abstract class Resource
     {
         return type;
     }
+    public boolean isBusy(LocalDate start, LocalDate end)
+    {
+        List<Reservation> reservations = HotelSystem.getReservations();
+        for(Reservation reservation : reservations)
+        {
+            if(reservation.getResource_id().equals(this.resource_id))
+            {
+                if(reservation.isActive() &&
+                        ((reservation.getStart().isAfter(start) || reservation.getStart().isEqual(start))
+                                && reservation.getStart().isBefore(end)
+                        || reservation.getEnd().isAfter(start)  &&
+                                (reservation.getEnd().isBefore(end) || reservation.getEnd().isEqual(end)))
+                )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

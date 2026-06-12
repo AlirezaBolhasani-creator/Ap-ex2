@@ -23,7 +23,7 @@ public class Reservation
         this.sign_time = sign_time;
         id = HotelSystem.getNewReserveId();
     }
-    public boolean isActive()
+    public boolean isActive()//not canceled, not checkout
     {
         return true;
     }
@@ -34,5 +34,13 @@ public class Reservation
     public String getResource_id()
     {
         return resource_id;
+    }
+    public LocalDate getStart()
+    {
+        return start;
+    }
+    public LocalDate getEnd()
+    {
+        return end;
     }
 }
