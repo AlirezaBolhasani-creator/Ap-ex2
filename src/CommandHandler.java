@@ -27,6 +27,7 @@ public class CommandHandler {
         commands.put("edit-service", new EditServiceCatalog());
         commands.put("remove-service", new RemoveServiceCatalog());
         commands.put("reserve", new AddReservation());
+        commands.put("cancel-reserve", new CancelReservation());
     }
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -265,6 +266,18 @@ public class CommandHandler {
             assert g != null;
             g.addReservation(args[2], args[3], LocalDate.parse(args[4]), LocalDate.parse(args[5]),
                     LocalDate.parse(args[6]), LocalTime.parse(args[7]));
+        }
+    }
+    private static class CancelReservation implements Command {
+        @Override
+        public void execute(String[] args) {
+            if(!HotelSystem.auth(args[0], args[1], "Guest")) {
+                return;
+            }
+            Human h = HotelSystem.findHumanByUsername(args[0]);
+            Guest g = (Guest) h;
+            assert g != null;
+            g.cancelReservation(Integer.parseInt(args[2]), LocalDate.parse(args[3]), LocalTime.parse(args[4]));
         }
     }
 }

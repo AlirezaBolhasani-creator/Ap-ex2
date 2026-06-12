@@ -1,3 +1,4 @@
+import javax.swing.text.Caret;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -11,6 +12,9 @@ public class Reservation
     private LocalDate end;
     private LocalDate sign_date;
     private LocalTime sign_time;
+    private boolean is_checked_in =  false;
+    private boolean is_checked_out =  false;
+    private boolean is_canceled =  false;
     public Reservation(String guest_id, String hotel_id, String resource_id, LocalDate start, LocalDate end,
                        LocalDate sign_date, LocalTime sign_time)
     {
@@ -25,7 +29,7 @@ public class Reservation
     }
     public boolean isActive()//not canceled, not checkout
     {
-        return true;
+        return !this.is_checked_out && !this.is_canceled;
     }
     public  String getHotel_id()
     {
@@ -42,5 +46,21 @@ public class Reservation
     public LocalDate getEnd()
     {
         return end;
+    }
+    public int  getId()
+    {
+        return id;
+    }
+    public String getGuest_id()
+    {
+        return guest_id;
+    }
+    public boolean isCheckedIn()
+    {
+        return is_checked_in;
+    }
+    public void setCanceled()
+    {
+        this.is_canceled = true;
     }
 }

@@ -107,6 +107,13 @@ public class HotelSystem
                 return c;
         return null;
     }
+    public static Reservation findReservationById(int reservation_id)
+    {
+        for(Reservation r : reservations)
+            if(r.getId() == reservation_id)
+                return r;
+        return null;
+    }
     //auth
     public static boolean auth(String username, String password, String type)
     {

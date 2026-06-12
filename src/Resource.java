@@ -1,4 +1,6 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public abstract class Resource
@@ -69,5 +71,10 @@ public abstract class Resource
         }
         return false;
     }
+    public Long  getPrice()
+    {
+        return price;
+    }
+    abstract public Long cancel(LocalDate cancel_date, LocalTime cancel_time, LocalDate start_res);
 
 }

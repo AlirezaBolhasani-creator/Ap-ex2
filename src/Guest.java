@@ -59,7 +59,7 @@ public class Guest extends Human
             System.out.println("not-allowed");
             return;
         }
-        if(this.payment > 0)
+        if(this.payment < 0)
         {
             System.out.println("not-allowed");
             return;
@@ -94,5 +94,40 @@ public class Guest extends Human
                 start, end, sign_date, sign_time));
         System.out.println("success "+ HotelSystem.getReservationsCount());
 
+    }
+    public void cancelReservation(int reservation_id, LocalDate cancel_date, LocalTime cancel_time)
+    {
+        Reservation reservation = HotelSystem.findReservationById(reservation_id);
+        if(reservation == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        if(!reservation.getGuest_id().equals(this.getUsername()))
+        {
+            System.out.println("not-found");
+            return;
+        }
+        if(!reservation.isActive() || reservation.isCheckedIn())
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        String hotel_id = reservation.getHotel_id();
+        String resource_id = reservation.getResource_id();
+        Resource resource = HotelSystem.findResources(resource_id, hotel_id);
+
+        assert resource != null;
+        Long cancel_penalty = resource.cancel(cancel_date, cancel_time, reservation.getStart());
+        if(cancel_penalty == 0L)
+        {
+            System.out.println("success");
+        }
+        else
+        {
+            System.out.println(cancel_penalty);
+        }
+        reservation.setCanceled();
+        this.payment -=  cancel_penalty;
     }
 }
