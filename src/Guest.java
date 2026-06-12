@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Guest extends Human
 {
     private String first_name;
@@ -44,5 +47,49 @@ public class Guest extends Human
     public String getLastName()
     {
         return last_name;
+    }
+    public void addReservation(String hotel_id, String resource_id, LocalDate start, LocalDate end,
+                               LocalDate sign_date, LocalTime sign_time)
+    {
+        int count = 0;
+        for(Reservation reservation: HotelSystem.getReservations())
+            if(reservation.getHotel_id().equals(hotel_id))
+                count++;
+        if(count >= 3)
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        if(this.payment > 0)
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        if(start.isAfter(end))
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        if(HotelSystem.findHotelById(hotel_id) == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        Resource resource = HotelSystem.findResources(hotel_id, resource_id);
+        if(resource == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        else if(!resource.getType().equals("standard") && !resource.getType().equals("suite"))
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+
+        HotelSystem.getReservations().add(new Reservation(this.getUsername(), hotel_id,  resource_id,
+                start, end, sign_date, sign_time));
+        System.out.println("success "+ HotelSystem.getReservationsCount());
+
     }
 }

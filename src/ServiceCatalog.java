@@ -59,14 +59,12 @@ public class ServiceCatalog
     }
     public static ServiceType getServiceTypeByString(String type)
     {
-        if(type.equals("restaurant"))
-            return ServiceType.RESTAURANT;
-        else if(type.equals("spa"))
-            return ServiceType.SPA;
-        else if(type.equals("gym"))
-            return ServiceType.GYM;
-        else if(type.equals("conference"))
-            return ServiceType.CONFERENCE;
-        return null;
+        return switch (type) {
+            case "restaurant" -> ServiceType.RESTAURANT;
+            case "spa" -> ServiceType.SPA;
+            case "gym" -> ServiceType.GYM;
+            case "conference" -> ServiceType.CONFERENCE;
+            default -> null;
+        };
     }
 }

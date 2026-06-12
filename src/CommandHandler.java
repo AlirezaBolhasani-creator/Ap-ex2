@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class CommandHandler {
         commands.put("add-service", new AddServiceCatalog());
         commands.put("edit-service", new EditServiceCatalog());
         commands.put("remove-service", new RemoveServiceCatalog());
+        commands.put("reserve", new AddReservation());
     }
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -250,6 +252,19 @@ public class CommandHandler {
             Manager m = (Manager) h;
             assert m != null;
             m.removeServiceCatalog(args[2], args[3]);
+        }
+    }
+    private static class AddReservation implements Command {
+        @Override
+        public void execute(String[] args) {
+            if(!HotelSystem.auth(args[0], args[1], "Guest")) {
+                return;
+            }
+            Human h = HotelSystem.findHumanByUsername(args[0]);
+            Guest g = (Guest) h;
+            assert g != null;
+            g.addReservation(args[2], args[3], LocalDate.parse(args[4]), LocalDate.parse(args[5]),
+                    LocalDate.parse(args[6]), LocalTime.parse(args[7]));
         }
     }
 }
