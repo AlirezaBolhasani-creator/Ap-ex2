@@ -18,7 +18,7 @@ public class Guest extends Human
         this.national_id = national_id;
         this.phone_number = phone_number;
         this.nation = nation;
-        this.payment = null;
+        this.payment = 0L;
     }
     public void setLastName(String last_name)
     {
@@ -75,7 +75,7 @@ public class Guest extends Human
             System.out.println("not-found");
             return;
         }
-        Resource resource = HotelSystem.findResources(hotel_id, resource_id);
+        Resource resource = HotelSystem.findResources(resource_id, hotel_id);
         if(resource == null)
         {
             System.out.println("not-found");

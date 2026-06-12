@@ -12,7 +12,6 @@ public class Manager extends Staff
                                 String category_id, String type, String hotel_id)
     {
         List<Resource> resources = HotelSystem.getResources();
-        List<Category> categories = HotelSystem.getCategories();
         if(HotelSystem.findHotelById(hotel_id) == null )
         {
             System.out.println("not-found");
@@ -32,16 +31,10 @@ public class Manager extends Staff
             category_id = "null";
         else
         {
-            boolean category_exists = false;
-            for(Category category : categories)
-                if (category.getCategory_id().equals(category_id)) {
-                    category_exists = true;
-                    break;
-                }
-            if(!category_exists)
+            Category category = HotelSystem.findCategoryById(category_id);
+            if(category == null)
             {
                 System.out.println("not-found");
-
                 return;
             }
         }
