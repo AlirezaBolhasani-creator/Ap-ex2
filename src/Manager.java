@@ -50,9 +50,9 @@ public class Manager extends Staff
                     price, category_id, hotel_id));
             case "standard" -> resources.add(new StandardRoom(resource_id, number_or_name, capacity,
                     price, category_id, hotel_id));
-            case "time-share" -> resources.add(new TimeShareRoom(resource_id, number_or_name, capacity,
+            case "timeshare" -> resources.add(new TimeShareRoom(resource_id, number_or_name, capacity,
                     price, category_id, hotel_id));
-            case "hall" -> resources.add(new Hall(resource_id, number_or_name, capacity, price, category_id, hotel_id));
+            case "vip_hall" -> resources.add(new Hall(resource_id, number_or_name, capacity, price, category_id, hotel_id));
             default -> System.out.println("not-found");
         }
         System.out.println("success");
@@ -141,20 +141,15 @@ public class Manager extends Staff
         catalogs.add(new ServiceCatalog(service_catalog_id, name, service_type, price, timeRange, hotel_id));
         System.out.println("success");
     }
-    public void editServiceCatalog(String service_id, String hotel_id, String name, ServiceCatalog.ServiceType type,
-                                   Integer price, LocalTime start, LocalTime end)
+    public void editServiceCatalog(String service_id, String name, ServiceCatalog.ServiceType type,
+                                   Integer price, LocalTime start, LocalTime end, String hotel_id)
     {
-        if(!this.getHotel_id().equals(hotel_id))
+        if(hotel_id != null)
         {
             System.out.println("permission-denied");
             return;
         }
-        if(HotelSystem.findHotelById(hotel_id) == null)
-        {
-            System.out.println("not-found");
-            return;
-        }
-        ServiceCatalog sc = HotelSystem.findServiceCatalogById(service_id, hotel_id);
+        ServiceCatalog sc = HotelSystem.findServiceCatalogById(service_id, this.getHotel_id());
         if(sc == null)
         {
             System.out.println("not-found");

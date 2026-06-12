@@ -232,11 +232,12 @@ public class CommandHandler {
             Human h = HotelSystem.findHumanByUsername(args[0]);
             Manager m = (Manager) h;
             assert m != null;
-            ServiceCatalog.ServiceType type = args[5].equals("-")? null: ServiceCatalog.getServiceTypeByString(args[5]);
-            Integer price = args[6].equals("-")? null: Integer.parseInt(args[6]);
-            LocalTime start = args[7].equals("-")? null: LocalTime.parse(args[7]);
-            LocalTime end = args[8].equals("-")? null: LocalTime.parse(args[8]);
-            m.editServiceCatalog(args[2], args[3], editCheck(args[4]), type, price, start, end);
+            ServiceCatalog.ServiceType type = args[4].equals("-")? null: ServiceCatalog.getServiceTypeByString(args[4]);
+            Integer price = args[5].equals("-")? null: Integer.parseInt(args[5]);
+            LocalTime start = args[6].equals("-")? null: LocalTime.parse(args[6]);
+            LocalTime end = args[7].equals("-")? null: LocalTime.parse(args[7]);
+
+            m.editServiceCatalog(args[2], editCheck(args[3]), type, price, start, end, editCheck(args[8]));
         }
     }
     private static class RemoveServiceCatalog implements Command {
