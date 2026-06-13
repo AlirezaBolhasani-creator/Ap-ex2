@@ -53,15 +53,6 @@ public abstract class Staff extends Human
     {
         this.address = address;
     }
-    public void setType_of_staff(String type)
-    {
-        this.type_of_staff = type;
-        super.setType(type);
-    }
-    public String getType_of_staff()
-    {
-        return type_of_staff;
-    }
     public void searchGuest(String guest_name)
     {
         List<String> userNames = new ArrayList<>();
