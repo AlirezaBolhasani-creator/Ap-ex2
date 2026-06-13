@@ -21,9 +21,5 @@ public class Category
     {
         return category_name;
     }
-    public String getCategory_description()
-    {
-        return category_description;
-    }
 }
 

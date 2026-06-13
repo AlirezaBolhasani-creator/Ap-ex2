@@ -150,4 +150,14 @@ public class Guest extends Human
     {
         this.payment += amount;
     }
+    public void addCommentForResource(String hotel_id, String resource_id, String comment)
+    {
+        Resource resource = HotelSystem.findResources(resource_id, hotel_id);
+        if(resource == null)
+        {
+            System.out.println("not-found");
+        }
+        HotelSystem.getComments().add(new Comment(hotel_id, resource_id, comment));
+        System.out.println("success");
+    }
 }

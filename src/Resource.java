@@ -75,6 +75,14 @@ public abstract class Resource
     {
         return price;
     }
+    public String getCategory_id()
+    {
+        return category_id;
+    }
+    public String getNumber_or_name()
+        {
+        return number_or_name;
+        }
     abstract public Long cancel(LocalDate cancel_date, LocalTime cancel_time, LocalDate start_res);
     abstract public Long lateCheckOut(LocalDate check_out_date, LocalTime check_out_time, LocalDate end_res);
 }

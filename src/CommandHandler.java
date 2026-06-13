@@ -32,6 +32,8 @@ public class CommandHandler {
         commands.put("check-out", new CheckOutReservation());
         commands.put("view-balance", new ViewBalance());
         commands.put("pay", new Pay());
+        commands.put("add-comment", new Comments());
+        commands.put("search", new Search());
     }
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -330,6 +332,24 @@ public class CommandHandler {
             Guest g = (Guest) h;
             assert g != null;
             g.pay(Integer.parseInt(args[2]),  LocalDate.parse(args[3]), LocalTime.parse(args[4]));
+        }
+    }
+    private static class Comments implements Command {
+        @Override
+        public void execute(String[] args) {
+            if(!HotelSystem.auth(args[0], args[1], "Guest")) {
+                return;
+            }
+            Human h = HotelSystem.findHumanByUsername(args[0]);
+            Guest g = (Guest) h;
+            assert g != null;
+            g.addCommentForResource(args[2], args[3], args[4]);
+        }
+    }
+    private static class Search implements Command {
+        @Override
+        public void execute(String[] args) {
+            Human.search(args[0]);
         }
     }
 }
