@@ -100,6 +100,11 @@ public abstract class Staff extends Human
             System.out.println("permission-denied");
             return;
         }
+        if(HotelSystem.findResources(resource_id, hotel_id) == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
         Reservation reservation = HotelSystem.findReservationById(reserve_id);
         if(reservation == null)
         {
