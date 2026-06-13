@@ -76,5 +76,5 @@ public abstract class Resource
         return price;
     }
     abstract public Long cancel(LocalDate cancel_date, LocalTime cancel_time, LocalDate start_res);
-
+    abstract public Long lateCheckOut(LocalDate check_out_date, LocalTime check_out_time, LocalDate end_res);
 }

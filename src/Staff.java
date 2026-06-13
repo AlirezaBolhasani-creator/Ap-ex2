@@ -1,7 +1,8 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,7 +78,6 @@ public abstract class Staff extends Human
             s.append(u).append("|");
         s.deleteCharAt(s.length()-1);
         System.out.println(s);
-        return;
     }
     public void checkIn(String hotel_id, String resource_id, int reserve_id, LocalDate check_date, LocalTime check_time)
     {
@@ -102,6 +102,10 @@ public abstract class Staff extends Human
             System.out.println("not-found");
             return;
         }
+        if(!reservation.getResource_id().equals(resource_id))
+        {
+            System.out.println("not-found");
+        }
         if(reservation.isCheckedIn())
         {
             System.out.println("not-allowed");
@@ -117,13 +121,67 @@ public abstract class Staff extends Human
             System.out.println("not-allowed");
             return;
         }
+        System.out.println("success");
+        reservation.setCheckedIn();
+        reservation.setCheck_in_time(check_time);
+    }
+    public void checkOut(String hotel_id, String resource_id,int reserve_id, LocalDate check_out_date, LocalTime check_out_time)
+    {
+        if(HotelSystem.findHotelById(hotel_id) == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        if(!this.getHotel_id().equals(hotel_id))
+        {
+            System.out.println("permission-denied");
+            return;
+        }
+        if(HotelSystem.findResources(resource_id, hotel_id) == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        Reservation reservation = HotelSystem.findReservationById(reserve_id);
+        if(reservation == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
         if(!reservation.getResource_id().equals(resource_id))
         {
             System.out.println("not-found");
         }
-        System.out.println("success");
-        reservation.setCheckedIn();
-        reservation.setCheck_in_time(check_time);
+        if(!reservation.isCheckedIn())
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        if(!reservation.isActive())
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        Resource resource = HotelSystem.findResources(resource_id, hotel_id);
+        Long late = resource.lateCheckOut(check_out_date, check_out_time, reservation.getEnd());
+        long nights = ChronoUnit.DAYS.between(check_out_date, reservation.getEnd());
+        long calculate_price = nights * resource.getPrice();
+        long calculate_services_price = 0;
+        List<Service> services = HotelSystem.getServices();
+        for(Service s : services)
+        {
+            if(s.getGuest_id().equals(reservation.getGuest_id()))
+            {
+                if((s.getUsage_date().isBefore(check_out_date)|| s.getUsage_date().isEqual(check_out_date))
+                && (s.getUsage_date().isAfter(reservation.getStart()) || s.getUsage_date().isEqual(reservation.getStart())))
+                {
+                    calculate_services_price += (long) s.getUsage_times() * s.getService_catalog().getPrice();
+                }
+            }
+        }
+        long final_price = late + calculate_services_price + calculate_price;
+        System.out.println(final_price);
+        reservation.setCheckOut();
     }
 }
 

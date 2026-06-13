@@ -13,4 +13,9 @@ public class Hall extends Resource
     {
         return 0L;
     }
+    @Override
+    public Long lateCheckOut(LocalDate check_out_date, LocalTime check_out_time, LocalDate end_res)
+    {
+        return 0L;
+    }
 }

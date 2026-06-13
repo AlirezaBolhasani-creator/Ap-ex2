@@ -72,4 +72,8 @@ public class Reservation
     {
         this.check_in_time = time;
     }
+    public void setCheckOut()
+    {
+        this.is_checked_out = true;
+    }
 }

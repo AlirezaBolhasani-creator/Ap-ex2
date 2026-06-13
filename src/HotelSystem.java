@@ -10,6 +10,7 @@ public class HotelSystem
     private static List<Hotel> hotels = new ArrayList<>();
     private static List<Category> categories = new ArrayList<>();
     private static List<ServiceCatalog>  serviceCatalogs = new ArrayList<>();
+    private static List<Service> services = new ArrayList<>();
     private static int reservationsCount = 0;
     //setting admin
     public static void setAdmin(String username, String password)
@@ -41,6 +42,10 @@ public class HotelSystem
     public static List<ServiceCatalog> getServiceCatalogs()
     {
         return serviceCatalogs;
+    }
+    public static List<Service> getServices()
+    {
+        return services;
     }
     public static int   getNewReserveId()
     {
