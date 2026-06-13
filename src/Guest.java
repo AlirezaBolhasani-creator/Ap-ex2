@@ -145,6 +145,7 @@ public class Guest extends Human
     public void pay(long amount, LocalDate payment_date, LocalTime payment_time)
     {
         this.payment -= amount;
+        System.out.println("success");
         HotelSystem.getBills().add(new Bill(this.getUsername(), amount, "Pay", payment_date, payment_time));
     }
     public void changePaymentCheckOut(long amount)
@@ -235,5 +236,6 @@ public class Guest extends Human
         this.payment -= room.getPrice();
         HotelSystem.getBills().add(new Bill(this.getUsername(), room.getPrice(), "Bill_Timeshare", date,
                 LocalTime.of(12, 0)));
+        System.out.println("success");
     }
 }
