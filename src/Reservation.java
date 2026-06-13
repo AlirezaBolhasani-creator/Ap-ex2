@@ -15,6 +15,7 @@ public class Reservation
     private boolean is_checked_in =  false;
     private boolean is_checked_out =  false;
     private boolean is_canceled =  false;
+    LocalTime check_in_time;
     public Reservation(String guest_id, String hotel_id, String resource_id, LocalDate start, LocalDate end,
                        LocalDate sign_date, LocalTime sign_time)
     {
@@ -62,5 +63,13 @@ public class Reservation
     public void setCanceled()
     {
         this.is_canceled = true;
+    }
+    public void setCheckedIn()
+    {
+        this.is_checked_in = true;
+    }
+    public void setCheck_in_time(LocalTime time)
+    {
+        this.check_in_time = time;
     }
 }

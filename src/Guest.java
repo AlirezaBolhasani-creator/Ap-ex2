@@ -52,7 +52,7 @@ public class Guest extends Human
     {
         int count = 0;
         for(Reservation reservation: HotelSystem.getReservations())
-            if(reservation.getHotel_id().equals(hotel_id))
+            if(reservation.getGuest_id().equals(this.getUsername()) )
                 count++;
         if(count >= 3)
         {

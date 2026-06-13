@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -85,6 +87,47 @@ public abstract class Staff extends Human
         s.deleteCharAt(s.length()-1);
         System.out.println(s);
         return;
+    }
+    public void checkIn(String hotel_id, String resource_id, int reserve_id, LocalDate check_date, LocalTime check_time)
+    {
+        if(HotelSystem.findHotelById(hotel_id) == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        if(!this.getHotel_id().equals(hotel_id))
+        {
+            System.out.println("permission-denied");
+            return;
+        }
+        Reservation reservation = HotelSystem.findReservationById(reserve_id);
+        if(reservation == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        if(reservation.isCheckedIn())
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        if(!reservation.isActive())
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        if(!reservation.getStart().isEqual(check_date))
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        if(!reservation.getResource_id().equals(resource_id))
+        {
+            System.out.println("not-found");
+        }
+        System.out.println("success");
+        reservation.setCheckedIn();
+        reservation.setCheck_in_time(check_time);
     }
 }
 
