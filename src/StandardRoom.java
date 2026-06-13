@@ -26,10 +26,12 @@ public class StandardRoom extends Resource
     @Override
     public Long lateCheckOut(LocalDate check_out_date, LocalTime check_out_time, LocalDate end_res)
     {
+
         LocalDateTime check_out = LocalDateTime.of(check_out_date, check_out_time);
-        LocalDateTime end = LocalDateTime.of(end_res, LocalTime.of(14, 0));
+        LocalDateTime end = LocalDateTime.of(end_res, LocalTime.of(12, 0));
         long hours = ChronoUnit.HOURS.between(check_out, end);
-        if(hours >= 0)
+        System.out.println(hours + " in lateCheckOut");
+        if(hours >= 1 && end.isBefore(check_out))
         {
             return (Long)(long) (1.5) * super.getPrice();
         }

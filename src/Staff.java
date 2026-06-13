@@ -164,7 +164,14 @@ public abstract class Staff extends Human
         }
         Resource resource = HotelSystem.findResources(resource_id, hotel_id);
         Long late = resource.lateCheckOut(check_out_date, check_out_time, reservation.getEnd());
-        long nights = ChronoUnit.DAYS.between(check_out_date, reservation.getEnd());
+        long nights;
+        if(check_out_date.isBefore(reservation.getEnd()))
+        {
+            nights = ChronoUnit.DAYS.between(reservation.getStart(), reservation.getEnd());
+        }
+        else {
+            nights = ChronoUnit.DAYS.between(reservation.getStart(), check_out_date);
+        }
         long calculate_price = nights * resource.getPrice();
         long calculate_services_price = 0;
         List<Service> services = HotelSystem.getServices();
@@ -182,6 +189,10 @@ public abstract class Staff extends Human
         long final_price = late + calculate_services_price + calculate_price;
         System.out.println(final_price);
         reservation.setCheckOut();
+        Guest g = (Guest) HotelSystem.findHumanByUsername(reservation.getGuest_id());
+        g.changePaymentCheckOut(final_price);
+        HotelSystem.getBills().add(new Bill(reservation.getGuest_id(), final_price, "Checkout_Bill", check_out_date,
+                check_out_time));
     }
 }
 

@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class Guest extends Human
 {
@@ -129,5 +130,24 @@ public class Guest extends Human
         }
         reservation.setCanceled();
         this.payment -=  cancel_penalty;
+        HotelSystem.getBills().add(new Bill(this.getUsername(), cancel_penalty, "Penalty_Cancellation", cancel_date,
+                cancel_time));
+    }
+    public void viewBalance()
+    {
+        System.out.println(this.payment * -1);
+        List<Bill> bills = HotelSystem.getBills();
+        for(Bill bill: bills)
+            if(bill.getGuest_id().equals(this.getUsername()))
+                System.out.println(bill);
+    }
+    public void pay(long amount, LocalDate payment_date, LocalTime payment_time)
+    {
+        this.payment -= amount;
+        HotelSystem.getBills().add(new Bill(this.getUsername(), amount, "Pay", payment_date, payment_time));
+    }
+    public void changePaymentCheckOut(long amount)
+    {
+        this.payment += amount;
     }
 }
