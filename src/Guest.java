@@ -208,4 +208,32 @@ public class Guest extends Human
         System.out.println("success");
         HotelSystem.getServices().add(new Service(service_id, this.getUsername(), usage_times, usage_date, usage_time));
     }
+    public void buyTimeShare(String hotel_id, String resource_id, LocalDate date)
+    {
+        Resource resource = HotelSystem.findResources(resource_id, hotel_id);
+        if(resource == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        if(!resource.getType().equals("timeshare"))
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        TimeShareRoom room = (TimeShareRoom)resource;
+        if(room.getIsSold())
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        if(this.payment * (-1) < room.getPrice())
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        this.payment -= room.getPrice();
+        HotelSystem.getBills().add(new Bill(this.getUsername(), room.getPrice(), "Bill_Timeshare", date,
+                LocalTime.of(12, 0)));
+    }
 }
