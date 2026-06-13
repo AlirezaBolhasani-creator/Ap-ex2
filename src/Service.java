@@ -7,11 +7,11 @@ public class Service
     private int usage_times;
     private LocalDate usage_date;
     private LocalTime usage_time;
-    private ServiceCatalog service_catalog;
-    public Service(ServiceCatalog service_catalog, String guest_id, int usage_times,
+    private  String service_catalog_id;
+    public Service(String service_catalog_id, String guest_id, int usage_times,
                    LocalDate usage_date, LocalTime usage_time)
     {
-        this.service_catalog = service_catalog;
+        this.service_catalog_id = service_catalog_id;
         this.guest_id = guest_id;
         this.usage_times = usage_times;
         this.usage_date = usage_date;
@@ -23,11 +23,11 @@ public class Service
     }
     public String getHotel_id()
     {
-        return service_catalog.getHotel_id();
+        return service_catalog_id;
     }
-    public ServiceCatalog getService_catalog()
+    public String getService_catalog()
     {
-        return service_catalog;
+        return service_catalog_id;
     }
     public  int getUsage_times()
     {

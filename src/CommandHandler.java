@@ -34,6 +34,7 @@ public class CommandHandler {
         commands.put("pay", new Pay());
         commands.put("add-comment", new Comments());
         commands.put("search", new Search());
+        commands.put("use-service", new UseService());
     }
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -350,6 +351,18 @@ public class CommandHandler {
         @Override
         public void execute(String[] args) {
             Human.search(args[0]);
+        }
+    }
+    private static class UseService implements Command {
+        @Override
+        public void execute(String[] args) {
+            if(!HotelSystem.auth(args[0], args[1], "Guest")) {
+                return;
+            }
+            Human h = HotelSystem.findHumanByUsername(args[0]);
+            Guest g = (Guest) h;
+            assert g != null;
+            g.useService(args[2], args[3], Integer.parseInt(args[4]),  LocalDate.parse(args[5]), LocalTime.parse(args[6]));
         }
     }
 }

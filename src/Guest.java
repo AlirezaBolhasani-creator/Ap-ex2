@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -159,5 +160,52 @@ public class Guest extends Human
         }
         HotelSystem.getComments().add(new Comment(hotel_id, resource_id, comment));
         System.out.println("success");
+    }
+    public void useService(String hotel_id, String service_id, int usage_times, LocalDate usage_date, LocalTime usage_time)
+    {
+        boolean can_use = false;
+        if(HotelSystem.findHotelById(hotel_id) == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        ServiceCatalog serviceCatalog = HotelSystem.findServiceCatalogById(service_id, hotel_id);
+        if(serviceCatalog== null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        LocalTime start = serviceCatalog.getTimeRange().getStart();
+        LocalTime end = serviceCatalog.getTimeRange().getEnd();
+        boolean isBetween;
+
+        if (start.isBefore(end)) {
+            isBetween = !usage_time.isBefore(start) && !usage_time.isAfter(end);
+        } else {
+            isBetween = !usage_time.isBefore(start) || !usage_time.isAfter(end);
+        }
+        if(!isBetween)
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        for(Reservation reservation: HotelSystem.getReservations())
+        {
+            if(reservation.getGuest_id().equals(this.getUsername()) && reservation.isCheckedIn() && reservation.isActive())
+            {
+                can_use = true;
+            }
+        }
+        if(!can_use)
+        {
+            System.out.println("not-allowed");
+        }
+        if(usage_times <= 0)
+        {
+            System.out.println("not-allowed");
+            return;
+        }
+        System.out.println("success");
+        HotelSystem.getServices().add(new Service(service_id, this.getUsername(), usage_times, usage_date, usage_time));
     }
 }

@@ -182,7 +182,8 @@ public abstract class Staff extends Human
                 if((s.getUsage_date().isBefore(check_out_date)|| s.getUsage_date().isEqual(check_out_date))
                 && (s.getUsage_date().isAfter(reservation.getStart()) || s.getUsage_date().isEqual(reservation.getStart())))
                 {
-                    calculate_services_price += (long) s.getUsage_times() * s.getService_catalog().getPrice();
+                    ServiceCatalog serviceCatalog = HotelSystem.findServiceCatalogById(s.getService_catalog(), s.getHotel_id());
+                    calculate_services_price += (long) s.getUsage_times() * serviceCatalog.getPrice();
                 }
             }
         }
