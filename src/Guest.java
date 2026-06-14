@@ -132,7 +132,7 @@ public class Guest extends Human
         reservation.setCanceled();
         this.payment -=  cancel_penalty;
         HotelSystem.getBills().add(new Bill(this.getUsername(), cancel_penalty, "Penalty_Cancellation", cancel_date,
-                cancel_time));
+                cancel_time, hotel_id));
     }
     public void viewBalance()
     {
@@ -146,7 +146,7 @@ public class Guest extends Human
     {
         this.payment -= amount;
         System.out.println("success");
-        HotelSystem.getBills().add(new Bill(this.getUsername(), amount, "Pay", payment_date, payment_time));
+        HotelSystem.getBills().add(new Bill(this.getUsername(), amount, "Pay", payment_date, payment_time, null));
     }
     public void changePaymentCheckOut(long amount)
     {
@@ -235,7 +235,7 @@ public class Guest extends Human
         }
         this.payment -= room.getPrice();
         HotelSystem.getBills().add(new Bill(this.getUsername(), room.getPrice(), "Bill_Timeshare", date,
-                LocalTime.of(12, 0)));
+                LocalTime.of(12, 0), hotel_id));
         System.out.println("success");
     }
 }

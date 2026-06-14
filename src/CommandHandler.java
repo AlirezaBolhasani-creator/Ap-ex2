@@ -36,6 +36,10 @@ public class CommandHandler {
         commands.put("search", new Search());
         commands.put("use-service", new UseService());
         commands.put("buy-timeshare", new BuyTimeShares());
+        commands.put("category-report", new CategoryReport());
+        commands.put("hotel-report", new HotelReport());
+        commands.put("report-overdue-checkout", new ReportOverdueCheckout());
+        commands.put("report-revenue", new ReportRevenue());
     }
     public void start() {
         Scanner scanner = new Scanner(System.in);
@@ -376,6 +380,55 @@ public class CommandHandler {
             Guest g = (Guest) h;
             assert g != null;
             g.buyTimeShare(args[2], args[3], LocalDate.parse(args[4]));
+        }
+    }
+    private static class CategoryReport implements Command {
+        @Override
+        public void execute(String[] args) {
+            if(!HotelSystem.auth(args[0], args[1], "manager")) {
+                return;
+            }
+            Human h = HotelSystem.findHumanByUsername(args[0]);
+            Manager m = (Manager) h;
+            assert m != null;
+            m.categoryReport(args[2], args[3]);
+        }
+    }
+    private static class HotelReport implements Command {
+        @Override
+        public void execute(String[] args) {
+            if(!HotelSystem.auth(args[0], args[1], "manager")) {
+                return;
+            }
+            Human h = HotelSystem.findHumanByUsername(args[0]);
+            Manager m = (Manager) h;
+            assert m != null;
+            m.hotelReport(args[2]);
+        }
+    }
+    private static class ReportOverdueCheckout implements Command {
+        @Override
+        public void execute(String[] args) {
+            if(!HotelSystem.auth(args[0], args[1], "manager")) {
+                return;
+            }
+            Human h = HotelSystem.findHumanByUsername(args[0]);
+            Manager m = (Manager) h;
+            assert m != null;
+            LocalTime time =  LocalTime.parse(args[4]);
+            m.checkOutOverdueReport(args[2], LocalDate.parse(args[3]), time);
+        }
+    }
+    private static class ReportRevenue implements Command {
+        @Override
+        public void execute(String[] args) {
+            if(!HotelSystem.auth(args[0], args[1], "Admin")) {
+                return;
+            }
+            Human h = HotelSystem.findHumanByUsername(args[0]);
+            Admin admin = (Admin) h;
+            assert admin != null;
+            admin.reportRevenue();
         }
     }
 }

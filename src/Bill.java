@@ -7,12 +7,14 @@ public class Bill {
     private String type;
     private LocalDate date;
     private LocalTime time;
-    public Bill(String guest_id, Long price, String type , LocalDate bill_date, LocalTime bill_time) {
+    private String hotel_id;
+    public Bill(String guest_id, Long price, String type , LocalDate bill_date, LocalTime bill_time, String hotel_id) {
         this.guest_id = guest_id;
         this.price = price;
         this.type = type;
         this.date = bill_date;
         this.time = bill_time;
+        this.hotel_id = hotel_id;
     }
     public String getType()
     {
@@ -33,6 +35,10 @@ public class Bill {
     public  LocalTime getTime()
     {
         return time;
+    }
+    public String getHotel_id()
+    {
+        return hotel_id;
     }
     @Override
     public String toString()

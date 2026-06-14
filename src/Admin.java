@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 public class Admin extends Human
 {
@@ -158,6 +161,33 @@ public class Admin extends Human
             category = new Category(id, name);
         categories.add(category);
         System.out.println("success");
+    }
+    public void reportRevenue()
+    {
+        Long total = 0L;
+        List<Hotel> hotels = HotelSystem.getHotels();
+        List<String> ans =  new ArrayList<>();
+        List<Bill> bills = HotelSystem.getBills();
+        for(Hotel h : hotels)
+        {
+            int count  = 0;
+            for(Bill b : bills)
+            {
+                if(b.getHotel_id()!= null && b.getHotel_id().equals(h.getId()))
+                {
+                    count += b.getPrice();
+                    total = total + b.getPrice();
+                }
+            }
+            String s = h.getId() + " " +count;
+            ans.add(s);
+        }
+        Collections.sort(ans);
+        System.out.println("TOTAL " + total);
+        for(String s : ans)
+        {
+            System.out.println(s);
+        }
     }
     public String getUsername()
     {

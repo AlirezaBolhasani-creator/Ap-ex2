@@ -193,7 +193,7 @@ public abstract class Staff extends Human
         Guest g = (Guest) HotelSystem.findHumanByUsername(reservation.getGuest_id());
         g.changePaymentCheckOut(final_price);
         HotelSystem.getBills().add(new Bill(reservation.getGuest_id(), final_price, "Checkout_Bill", check_out_date,
-                check_out_time));
+                check_out_time, this.hotel_id));
     }
 }
 

@@ -71,6 +71,18 @@ public abstract class Resource
         }
         return false;
     }
+    public boolean doesHaveReservation()
+    {
+        List<Reservation> reservations = HotelSystem.getReservations();
+        for(Reservation reservation : reservations)
+        {
+            if(reservation.getResource_id().equals(this.resource_id) && reservation.isActive())
+                {
+                return true;
+                }
+        }
+        return false;
+    }
     public Long  getPrice()
     {
         return price;

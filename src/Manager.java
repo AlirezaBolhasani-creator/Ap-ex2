@@ -1,4 +1,8 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 public class Manager extends Staff
 {
@@ -181,5 +185,118 @@ public class Manager extends Staff
         List<ServiceCatalog> catalogs = HotelSystem.getServiceCatalogs();
         catalogs.remove(sc);
         System.out.println("success");
+    }
+    public void categoryReport(String category_id, String hotel_id)
+    {
+        Hotel h = HotelSystem.findHotelById(hotel_id);
+        if(h == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        if(!this.getHotel_id().equals(hotel_id))
+        {
+            System.out.println("permission-denied");
+            return;
+        }
+        if(!category_id.equals("null") && HotelSystem.findCategoryById(category_id) == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        List<Resource> resources = HotelSystem.getResources();
+        int count = 0;
+        int active = 0;
+        for(Resource r : resources)
+        {
+            if(r.getCategory_id().equals(category_id) && r.getHotel_id().equals(hotel_id))
+            {
+                count++;
+                if(r.doesHaveReservation())
+                    active++;
+            }
+        }
+        System.out.println(count + " " + active);
+    }
+    public void hotelReport(String hotel_id)
+    {
+        Hotel h = HotelSystem.findHotelById(hotel_id);
+        if(h == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        if(!this.getHotel_id().equals(hotel_id))
+        {
+            System.out.println("permission-denied");
+            return;
+        }
+        List<Resource> resources = HotelSystem.getResources();
+        int count_room = 0;
+        int count_timeshare = 0;
+        int count_suite = 0;
+        int count_hall = 0;
+        for(Resource r : resources)
+        {
+            if(r.getHotel_id().equals(hotel_id))
+            {
+                switch(r.getType())
+                    {
+                    case "standard":
+                        count_room++;
+                        break;
+                    case "timeshare":
+                        count_timeshare++;
+                        break;
+                    case "suite":
+                        count_suite++;
+                        break;
+                    case "vip_hall":
+                        count_hall++;
+                        break;
+                    }
+            }
+        }
+        System.out.println("Rooms: " + count_room + ", Suites: " + count_suite+
+                ", Timeshare: "+ count_timeshare + ", VIP Halls: " + count_hall);
+    }
+    public void checkOutOverdueReport(String hotel_id, LocalDate date, LocalTime time)
+    {
+        if(HotelSystem.findHotelById(hotel_id) == null)
+        {
+            System.out.println("not-found");
+            return;
+        }
+        if(!this.getHotel_id().equals(hotel_id))
+        {
+            System.out.println("permission-denied");
+            return;
+        }
+        List<Reservation> reservations = HotelSystem.getReservations();
+        List<Integer> ans =  new ArrayList<Integer>();
+        LocalDateTime datetime = LocalDateTime.of(date, time);
+
+        for(Reservation r : reservations)
+        {
+            if(r.getHotel_id().equals(hotel_id))
+            {
+                LocalDateTime must_exit = LocalDateTime.of(r.getEnd(), LocalTime.of(12,0));
+                if(r.isActive() && must_exit.isBefore(datetime))
+                    ans.add(r.getId());
+
+            }
+        }
+        Collections.sort(ans);
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0; i < ans.size(); i++)
+        {
+            stringBuilder.append(ans.get(i)).append("|");
+        }
+        if(!ans.isEmpty()) {
+            stringBuilder.deleteCharAt(stringBuilder.length()-1);
+            System.out.println(stringBuilder);
+        }
+        else
+            System.out.println("none");
     }
 }
